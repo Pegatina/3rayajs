@@ -1,16 +1,11 @@
 //variable global para poder enchufarla luego al guardar
 var ficha;
-
 //función a la que le pasamos un id, teniendo previamente en el html las fichas del j1 con la función.
 function pulsarficha(id){      
     //obtengo la ficha según su id
     ficha = document.getElementById(id);    
     //obtengo los huecos por su clase       
-   var huecos= document.getElementsByClassName('hueco');
-   
-   
-   //**** mirar los que están en ocupado si no tienen ya nada dentro que se actualicen 
- //probar con 2 fichas solo a hacer todo esto
+   var huecos= document.getElementsByClassName('hueco');   
 
    //recorro para mostrar los huecos, para poderlos usar
     for(var i = 0; i< huecos.length; i++){
@@ -39,9 +34,9 @@ function guardarficha(id){
 
 	
 	// y le cambio la clase para que no se remarque al elegir nueva ficha
-	pos.setAttribute("class","ocupado");	
+	pos.setAttribute("class","ocupado");    
     // desactivamos la interacción con el hueco porque ahora está ocupado
-	pos.setAttribute("onclick","");
+	pos.setAttribute("onclick","");    
 
 	//cambio de turnos
 	if(ficha.getAttribute("class")=="j1"){
@@ -65,7 +60,19 @@ function guardarficha(id){
 		for(let i=0;i<jugador2.length;i++){
 			jugador2[i].setAttribute("onclick","");
 		}
-	}  
+	} 
+    //******** 
+    //**** mirar los que están en ocupado si no tienen ya nada dentro que se actualicen 
+    //la vuelvo a declarar a ver si es por eso, pero tampoco.  
+    var pos = document.getElementById(id);  
+    if(!pos.children.length){ //no funciona ni esto, ni pos.children(), ni con el parámetro vacío, ni con hasChilNodes(), no cambia de nuevo a hueco.
+        alert("No tiene hijos."); //no va, no entra en el if...
+        //por si acaso, que js es especial.
+        var pos = document.getElementById(id);
+        //pos.className = 'hueco'; //tampoco funciona
+        pos.setAttribute("class","hueco"); //no entiendo por qué sí que funciona para cambiar a ocupado, pero no para cambiar a hueco.
+        pos.setAttribute("onclick","pulsarficha('"+pos+"')");
+    } //*****	
     //reglas del juego 3 en raya.
     comprobar();
 }
