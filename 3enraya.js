@@ -22,7 +22,15 @@ function guardarficha(id){
     var jugador1 = document.getElementsByClassName("j1");
     var jugador2 = document.getElementsByClassName("j2");
     //obtenemos todos los huecos por la clase
-    var huecos= document.getElementsByClassName("hueco");       
+    var huecos= document.getElementsByClassName("hueco");      
+
+    //antes de meter la ficha dentro de un hueco, compruebo los huecos ocupados
+    
+    if(ficha.parentElement.getAttribute("class")== "ocupado"){  //si el padre de la ficha está ocupado
+        ficha.parentElement.setAttribute("class","hueco"); //si lo pincho para sacarlo se pone en hueco
+        ficha.parentElement.setAttribute("onclick","guardarficha('"+ficha.parentElement.getAttribute("id")+"')");  //le devuelvo el onclick
+    }
+
 	//esto hace que se meta dentro del div del hueco el elemento que queramos, en este caso la ficha que tenemos pulsada.
 	pos.appendChild(ficha);
     //recorro los huecos para ocultarlos
@@ -31,12 +39,11 @@ function guardarficha(id){
             //pero muestro la ficha que tiene dentro
             ficha.setAttribute("style","visibility: visible");
         }
-
 	
 	// y le cambio la clase para que no se remarque al elegir nueva ficha
 	pos.setAttribute("class","ocupado");    
     // desactivamos la interacción con el hueco porque ahora está ocupado
-	pos.setAttribute("onclick","");    
+	pos.setAttribute("onclick","");        
 
 	//cambio de turnos
 	if(ficha.getAttribute("class")=="j1"){
@@ -60,20 +67,7 @@ function guardarficha(id){
 		for(let i=0;i<jugador2.length;i++){
 			jugador2[i].setAttribute("onclick","");
 		}
-	} 
-    //******** 
-    //**** mirar los que están en ocupado si no tienen ya nada dentro que se actualicen 
-    //la vuelvo a declarar a ver si es por eso, pero tampoco.  
-    var pos = document.getElementById(id);  
-    if(!pos.children.length){ //no funciona ni esto, ni pos.children(), ni con el parámetro vacío, ni con hasChilNodes(), no cambia de nuevo a hueco.
-        alert("No tiene hijos."); //no va, no entra en el if...
-        //por si acaso, que js es especial.
-        var pos = document.getElementById(id);
-        //pos.className = 'hueco'; //tampoco funciona
-        pos.setAttribute("class","hueco"); //no entiendo por qué sí que funciona para cambiar a ocupado, pero no para cambiar a hueco.
-        pos.setAttribute("onclick","pulsarficha('"+pos+"')");
-    } //*****	
-    //reglas del juego 3 en raya.
+	}    
     comprobar();
 }
 function comprobar(){
